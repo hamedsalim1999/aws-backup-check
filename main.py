@@ -8,8 +8,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Amazon S3 settings.
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID_2')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY_2')
 AWS_BUCKET_NAME = os.getenv('AWS_BUCKET_NAME')
 
 DB_USER = os.getenv('DB_USER')
@@ -38,12 +38,12 @@ def upload_to_s3(source_path, destination_filename):
 def main():
     now = datetime.now().strftime("%Y-%m-%d")
     filename = f"dbtest_{now}.sql"
-    destination = f"{BACKUP_PATH}/{filename}.sql"
+    destination = f"/tmp/{filename}"
 
     os.system(f"PGPASSWORD={DB_PASS} pg_dumpall --globals-only --no-role-passwords -h {DB_HOST} -U {DB_USER} > {destination}")
     upload_to_s3(destination, filename)
-
     print (f'Uploading {filename} to Amazon S3...')
+
 
 
 
